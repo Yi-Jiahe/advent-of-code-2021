@@ -1,5 +1,7 @@
 DAY=$1
 
-mkdir "Day $1"
-cp template.py "Day $1/day_$1.py"
-touch "Day $1/puzzle_input.txt"
+mkdir "day_$1"
+touch "day_$1/__init__.py"
+cp template.py "day_$1/main.py"
+touch "day_$1/puzzle_input.txt"
+touch "tests/test_day_$1.py"
