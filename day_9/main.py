@@ -53,8 +53,6 @@ def find_basin_sizes(heightmap):
     directions = (up, down, left, right)
 
     def size_basin(start):
-        logger.info("New Basin")
-
         size = 0
 
         search_stack = [start]
@@ -67,9 +65,6 @@ def find_basin_sizes(heightmap):
             x, y = point
 
             heightmap[y][x] = 9
-
-            for row in heightmap:
-                logger.info(row)
 
             for direction in directions:
                 x_adj, y_adj = x + direction[0], y + direction[1]
