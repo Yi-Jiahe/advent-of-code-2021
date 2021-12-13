@@ -34,7 +34,7 @@ def part_two():
 if __name__ == '__main__':
     print(title)
 
-    puzzle_input = []
+    puzzle_input = None
     with(open("puzzle_input.txt", 'r')) as f:
         puzzle_input = parse_input(f)
 
