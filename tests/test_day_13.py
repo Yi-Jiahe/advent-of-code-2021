@@ -1,9 +1,6 @@
 import day_13.main as day13
 
 
-
-
-
 def test_part_1():
     dots, folds = day13.parse_input(str.splitlines("""6,10
     0,14
@@ -29,7 +26,7 @@ def test_part_1():
     dots = day13.fold_instructions(dots, folds)
 
 
-def  test_part_2():
+def test_part_2():
     dots, folds = day13.parse_input(str.splitlines("""6,10
     0,14
     9,10

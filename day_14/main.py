@@ -38,17 +38,69 @@ def step(polymer, pair_insertion_rules):
     return new_polymer
 
 
-def find_quantities_of_most_and_least_common_element(polymer):
-    count = dict()
+def count_elements_in_polymer(polymer):
+    counts = dict()
 
     for char in polymer:
-        if char not in count:
-            count[char] = 0
-        count[char] += 1
+        if char not in counts:
+            counts[char] = 0
+        counts[char] += 1
 
-    print(count)
+    return counts
 
-    return max(count.values()), min(count.values())
+
+def find_quantities_of_most_and_least_common_element(counts):
+    return max(counts.values()), min(counts.values())
+
+
+def convert_polymer_to_mers(polymer):
+    mers = dict()
+
+    for i in range(len(polymer)):
+        if i < len(polymer) - 1:
+            mer = polymer[i:i+2]
+
+            if mer not in mers:
+                mers[mer] = 0
+            mers[mer] += 1
+
+    return mers
+
+
+def step_part_2(mers, pair_insertion_rules):
+    new_mers = {mer: count for mer, count in mers.items()}
+
+    for mer in mers:
+        if mer in pair_insertion_rules:
+            insertion = pair_insertion_rules[mer]
+            for i, element in enumerate(mer):
+                new_mer = None
+                if i == 0:
+                    new_mer = element + insertion
+                else:
+                    new_mer = insertion + element
+                if new_mer not in new_mers:
+                    new_mers[new_mer] = 0
+                new_mers[new_mer] += mers[mer]
+            new_mers[mer] -= mers[mer]
+    return new_mers
+
+
+def count_part_2(mers, polymer_template):
+    counts = dict()
+    for mer in mers:
+        for element in mer:
+            if element not in counts:
+                counts[element] = 0
+            counts[element] += mers[mer]
+
+    counts[polymer_template[0]] += 1
+    counts[polymer_template[-1]] += 1
+
+    for element in counts:
+        counts[element] //= 2
+
+    return counts
 
 
 def part_one():
@@ -60,7 +112,8 @@ def part_one():
     for i in range(10):
         polymer = step(polymer, pair_insertion_rules)
 
-    quantity_most, quantity_least = find_quantities_of_most_and_least_common_element(polymer)
+    counts = count_elements_in_polymer(polymer)
+    quantity_most, quantity_least = find_quantities_of_most_and_least_common_element(counts)
 
     print(quantity_most - quantity_least)
 
@@ -72,7 +125,14 @@ def part_two():
     logger.info("--- Part Two ---")
     print("--- Part Two ---")
 
+    mers = convert_polymer_to_mers(polymer_template)
+    for i in range(40):
+        mers = step_part_2(mers, pair_insertion_rules)
 
+    counts = count_part_2(mers, polymer_template)
+    quantity_most, quantity_least = find_quantities_of_most_and_least_common_element(counts)
+
+    print(f"{quantity_most - quantity_least}")
 
     logger.info("")
 
