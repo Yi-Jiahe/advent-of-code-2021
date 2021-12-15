@@ -115,12 +115,61 @@ def search(start, end, risk_levels):
     return node.g
 
 
+def compute_movement_cost_part_2(position, risk_levels):
+    rows, cols = len(risk_levels), len(risk_levels[0])
+
+    x, y = position
+
+    additional_risk_level = x // cols + y // rows
+
+    x %= cols
+    y %= rows
+
+    movement_cost = risk_levels[y][x] + additional_risk_level
+    if movement_cost > 9:
+        movement_cost -= 9
+    return movement_cost
+
+
+def search_part_2(start, end, risk_levels):
+    rows, cols = len(risk_levels) * 5, len(risk_levels[0]) * 5
+
+    # A* search
+    open = PriorityQueue([Node(start, None, 0, compute_h(start, end))])
+    closed = set()
+
+    while open.get_lowest_priority().position != end and open:
+        current = open.pop_lowest_priority()
+        closed.add(current.position)
+        for direction in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            x, y = current.position
+            x_adj = x + direction[0]
+            y_adj = y + direction[1]
+            if x_adj < 0 or cols <= x_adj or y_adj < 0 or rows <= y_adj:
+                continue
+            neighbour = (x_adj, y_adj)
+            cost = current.g + compute_movement_cost_part_2(neighbour, risk_levels)
+            if neighbour in open:
+                if cost < open.get_by_position(neighbour).g:
+                    open.remove_by_position(neighbour)
+            if neighbour not in open and neighbour not in closed:
+                neighbour_node = Node(neighbour, current, cost, compute_h(neighbour, end))
+                open.append(neighbour_node)
+
+    node = open.get_lowest_priority()
+    return node.g
+
+
+
 def part_one():
     logger.info(title)
     logger.info("--- Part One ---")
     print("--- Part One ---")
 
-    search(start, end, risk_levels)
+    start = (0, 0)
+    end = (len(risk_levels) - 1, len(risk_levels[0]) - 1)
+    total_risk_level_of_lowest_risk_path = search(start, end, risk_levels)
+    print(total_risk_level_of_lowest_risk_path)
 
     logger.info("")
 
@@ -130,8 +179,10 @@ def part_two():
     logger.info("--- Part Two ---")
     print("--- Part Two ---")
 
-
-
+    start = (0, 0)
+    end = ((len(risk_levels) * 5) - 1, (len(risk_levels[0]) * 5) - 1)
+    total_risk_level_of_lowest_risk_path = search_part_2(start, end, risk_levels)
+    print(total_risk_level_of_lowest_risk_path)
     logger.info("")
 
 
@@ -141,12 +192,6 @@ if __name__ == '__main__':
     risk_levels = None
     with(open("puzzle_input.txt", 'r')) as f:
         risk_levels = parse_input(f)
-
-    start = (0, 0)
-    end = (len(risk_levels) - 1, len(risk_levels[0]) - 1)
-
-    print(risk_levels)
-    print(start, end)
 
     part_one()
     part_two()

@@ -19,3 +19,11 @@ def test_part_1():
     total_risk_level_of_lowest_risk_path = day15.search(start, end, risk_levels)
 
     assert total_risk_level_of_lowest_risk_path == 40
+
+
+def test_part_2():
+    start = (0, 0)
+    end = ((len(risk_levels) * 5) - 1, (len(risk_levels[0]) * 5) - 1)
+    total_risk_level_of_lowest_risk_path = day15.search_part_2(start, end, risk_levels)
+
+    assert total_risk_level_of_lowest_risk_path == 315
