@@ -1,7 +1,5 @@
 import math
-import typing
 
-import day_15.main
 from aoc_logging import logger
 
 
