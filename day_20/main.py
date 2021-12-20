@@ -48,7 +48,8 @@ def enhance_image(image_enhancement_algorithm, light_pixels, n):
             for y_diff in [-1, 0, 1]:
                 for x_diff in [-1, 0, 1]:
                     pixel = (x + x_diff, y + y_diff)
-                    if image_enhancement_algorithm[0] == '#':
+                    # This means that the infinite reaches will flip between on and off
+                    if image_enhancement_algorithm[0] == '#' and image_enhancement_algorithm[-1] == '.':
                         if n % 2 == 0:
                             if pixel[0] <= x_min - 1 or pixel[0] >= x_max + 1 or pixel[1] <= y_min -1 or pixel[1] >= y_max + 1:
                                 index_binary += '1'
