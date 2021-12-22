@@ -1,3 +1,4 @@
+import copy
 import re
 
 from aoc_logging import logger
@@ -55,6 +56,47 @@ class Game:
             self.die = 1
         return roll
 
+
+def play_dirac_dice(positions):
+    dice_result = {3: 1, 4: 3, 5: 6, 6: 7, 7: 6, 8: 3, 9: 1}
+
+    memo = dict()
+    def play_turn(state, universes):
+        hashable_state = (state["player"], tuple([position for position in state["positions"]]), tuple([score for score in state["scores"]]), universes)
+
+        if hashable_state in memo:
+            return memo[hashable_state]
+
+        wins = [0, 0]
+
+        for i in range(len(wins)):
+            if state["scores"][i] >= 21:
+                wins[i] = universes
+                memo[hashable_state] = tuple(wins)
+                return tuple(wins)
+
+        for result, new_universes in dice_result.items():
+            new_state = copy.deepcopy(state)
+            player = new_state["player"]
+            new_position = (new_state["positions"][player] + result - 1) % 10 + 1
+            new_state["positions"][player] = new_position
+            new_state["scores"][player] += new_position
+            new_state["player"] = 0 if player == 1 else 1
+            wins_inner = play_turn(new_state, universes * new_universes)
+            for i in range(len(wins)):
+                wins[i] += wins_inner[i]
+        memo[hashable_state] = tuple(wins)
+        return tuple(wins)
+
+    state = {
+        "positions": positions,
+        "scores": [0 for _ in positions],
+        "player": 0
+    }
+
+    return play_turn(state, 1)
+
+
 def part_one(game):
     logger.info(title)
     logger.info("--- Part One ---")
@@ -76,12 +118,14 @@ def part_one(game):
     return answer
 
 
-def part_two():
+def part_two(positions):
     logger.info(title)
     logger.info("--- Part Two ---")
     print("--- Part Two ---")
 
+    wins = play_dirac_dice(positions)
 
+    print(max(wins))
 
     logger.info("")
 
@@ -89,9 +133,12 @@ def part_two():
 if __name__ == '__main__':
     print(title)
 
-    game = Game()
+    positions = None
     with(open("puzzle_input.txt", 'r')) as f:
-        game.parse_input(f)
+        positions = parse_input(f)
+
+    game = Game()
+    game.parse_input(open("puzzle_input.txt", 'r'))
 
     part_one(game)
-    part_two()
+    part_two(positions)
