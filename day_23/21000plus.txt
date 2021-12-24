@@ -1,0 +1,15 @@
+Start
+#############
+#...........#
+###D#D#C#C###
+  #B#A#B#A#
+  #########
+
+Ds move out for 7000 + 8000
+#############
+#.........DD#
+###.#.#C#C###
+  #B#A#B#A#
+  #########
+
+Ds are going to need another 6000 to move in so this will take at least 21000
