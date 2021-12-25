@@ -36,9 +36,9 @@ def test_part_1(input, expected_result):
     assert day22.part_one(steps) == expected_result
 
 @pytest.mark.parametrize("params, expected_volume", [
-    pytest.param(("on", (0, 3), (0, 3), (0, 3)), 64, id="cube"),
-    pytest.param(("on", (0, 0), (0, 3), (0, 3)), 16, id="bar"),
-    pytest.param(("on", (0, 0), (0, 0), (0, 0)), 1, id="dot"),
+    pytest.param(((0, 3), (0, 3), (0, 3)), 64, id="cube"),
+    pytest.param(((0, 0), (0, 3), (0, 3)), 16, id="bar"),
+    pytest.param(((0, 0), (0, 0), (0, 0)), 1, id="dot"),
 ])
 def test_volume(params, expected_volume):
     cube = day22.Cube(*params)
@@ -46,12 +46,12 @@ def test_volume(params, expected_volume):
 
 
 @pytest.mark.parametrize("params_1, params_2, expected_intersection", [
-    pytest.param(("on", (0, 3), (0, 3), (0, 3)), ("on", (0, 3), (2, 5), (2, 5)), 16, id="side intersection"),
-    pytest.param(("on", (0, 3), (0, 3), (0, 3)), ("on", (2, 5), (2, 5), (2, 5)), 8, id="corner intersection"),
-    pytest.param(("on", (0, 4), (0, 4), (0, 4)), ("on", (1, 3), (1, 3), (1, 3)), 27, id="internal intersection"),
-    pytest.param(("on", (0, 4), (0, 4), (0, 4)), ("on", (5, 8), (0, 4), (0, 4)), 0, id="no intersection x"),
-    pytest.param(("on", (0, 4), (0, 4), (0, 4)), ("on", (0, 4), (5, 8), (0, 4)), 0, id="no intersection y"),
-    pytest.param(("on", (0, 4), (0, 4), (0, 4)), ("on", (0, 4), (0, 4), (5, 8)), 0, id="no intersection z"),
+    pytest.param(((0, 3), (0, 3), (0, 3)), ((0, 3), (2, 5), (2, 5)), 16, id="side intersection"),
+    pytest.param(((0, 3), (0, 3), (0, 3)), ((2, 5), (2, 5), (2, 5)), 8, id="corner intersection"),
+    pytest.param(((0, 4), (0, 4), (0, 4)), ((1, 3), (1, 3), (1, 3)), 27, id="internal intersection"),
+    pytest.param(((0, 4), (0, 4), (0, 4)), ((5, 8), (0, 4), (0, 4)), 0, id="no intersection x"),
+    pytest.param(((0, 4), (0, 4), (0, 4)), ((0, 4), (5, 8), (0, 4)), 0, id="no intersection y"),
+    pytest.param(((0, 4), (0, 4), (0, 4)), ((0, 4), (0, 4), (5, 8)), 0, id="no intersection z"),
 ])
 def test_intersection(params_1, params_2, expected_intersection):
     cube_1 = day22.Cube(*params_1)
