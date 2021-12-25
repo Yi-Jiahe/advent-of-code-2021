@@ -35,29 +35,14 @@ def test_part_1(input, expected_result):
     steps = day22.parse_input(str.splitlines(input))
     assert day22.part_one(steps) == expected_result
 
-@pytest.mark.parametrize("params, expected_volume", [
-    pytest.param(("on", (0, 3), (0, 3), (0, 3)), 64, id="cube"),
-    pytest.param(("on", (0, 0), (0, 3), (0, 3)), 16, id="bar"),
-    pytest.param(("on", (0, 0), (0, 0), (0, 0)), 1, id="dot"),
-])
-def test_volume(params, expected_volume):
-    cube = day22.Cube(*params)
-    assert cube.volume() == expected_volume
 
-
-@pytest.mark.parametrize("params_1, params_2, expected_intersection", [
-    pytest.param(("on", (0, 3), (0, 3), (0, 3)), ("on", (0, 3), (2, 5), (2, 5)), 16, id="side intersection"),
-    pytest.param(("on", (0, 3), (0, 3), (0, 3)), ("on", (2, 5), (2, 5), (2, 5)), 8, id="corner intersection"),
-    pytest.param(("on", (0, 4), (0, 4), (0, 4)), ("on", (1, 3), (1, 3), (1, 3)), 27, id="internal intersection"),
-    pytest.param(("on", (0, 4), (0, 4), (0, 4)), ("on", (5, 8), (0, 4), (0, 4)), 0, id="no intersection x"),
-    pytest.param(("on", (0, 4), (0, 4), (0, 4)), ("on", (0, 4), (5, 8), (0, 4)), 0, id="no intersection y"),
-    pytest.param(("on", (0, 4), (0, 4), (0, 4)), ("on", (0, 4), (0, 4), (5, 8)), 0, id="no intersection z"),
+@pytest.mark.parametrize("c1, c2, intersection", [
+    pytest.param(("on", (0, 3), (0, 3), (0, 3)), ("on", (0, 3), (2, 5), (2, 5)), 8, id="side intersection"),
 ])
-def test_intersection(params_1, params_2, expected_intersection):
-    cube_1 = day22.Cube(*params_1)
-    cube_2 = day22.Cube(*params_2)
-    assert cube_1.intersection(cube_2) == expected_intersection
-    assert cube_2.intersection(cube_1) == expected_intersection
+def test_intersection(c1, c2, intersection):
+    c_1 = day22.Cube(*c1)
+    c_2 = day22.Cube(*c2)
+    assert c_1.intersection(c_2) == intersection
 
 def test_part_2():
     steps = day22.parse_input(str.splitlines("""on x=-5..47,y=-31..22,z=-19..33
