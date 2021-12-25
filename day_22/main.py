@@ -13,6 +13,12 @@ class Cube:
         self.y_range = y_range
         self.z_range = z_range
 
+    def volume(self):
+        len_x = self.x_range[1] - self.x_range[0] + 1
+        len_y = self.y_range[1] - self.y_range[0] + 1
+        len_z = self.z_range[1] - self.z_range[0] + 1
+        return len_x * len_y * len_z
+
     def intersection(self, other):
         intersection_x = min(self.x_range[1], other.x_range[1]) - max(self.x_range[0], other.x_range[0]) + 1
         if intersection_x <= 0:
@@ -68,24 +74,16 @@ def part_two(steps):
     logger.info("--- Part Two ---")
     print("--- Part Two ---")
 
-    on_cubes = set()
+    on_cubes = 0
+    cubes = []
     for step in steps:
-        for x in range(step['x_range'][0], step['x_range'][1]+ 1):
-            for y in range(step['y_range'][0], step['y_range'][1] + 1):
-                for z in range(step['z_range'][0], step['z_range'][1] + 1):
-                    cube = (x, y, z)
-                    if step['function'] == 'on' and cube not in on_cubes:
-                        on_cubes.add(cube)
-                    elif step['function'] == 'off' and cube in on_cubes:
-                        on_cubes.remove(cube)
+        cube = Cube(step['function'], step['x_range'], step['y_range'], step['z_range'])
 
-    print(len(on_cubes))
+    print(on_cubes)
 
     logger.info("")
 
-    return len(on_cubes)
-
-    logger.info("")
+    return on_cubes
 
 
 if __name__ == '__main__':

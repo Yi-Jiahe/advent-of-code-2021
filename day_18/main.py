@@ -188,6 +188,7 @@ def part_two(homework):
 
     return max_magnitude
 
+
 if __name__ == '__main__':
     print(title)
 
