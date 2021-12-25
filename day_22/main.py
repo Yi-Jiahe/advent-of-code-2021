@@ -13,6 +13,15 @@ class Cube:
         self.y_range = y_range
         self.z_range = z_range
 
+    def volume(self):
+        len_x = self.x_range[1] - self.x_range[0] + 1
+        len_y = self.y_range[1] - self.y_range[0] + 1
+        len_z = self.z_range[1] - self.z_range[0] + 1
+        return len_x * len_y * len_z
+
+    def __hash__(self):
+        return hash((self.x_range[0], self.x_range[1], self.y_range[0], self.y_range[1], self.z_range[0], self.z_range[1]))
+
     def intersection(self, other):
         intersection_x = min(self.x_range[1], other.x_range[1]) - max(self.x_range[0], other.x_range[0]) + 1
         if intersection_x <= 0:
